@@ -195,3 +195,22 @@ See LICENSE file (or add your own).
 
 **Last Updated:** 2026-03-19  
 **Status:** MVP Phase — Ready for human-in-the-loop operations
+## MVP responsibilities
+
+At the current MVP stage:
+
+- **GitHub** is the source of truth.
+- **OpenAI / ChatGPT** acts as the director and task spec author.
+- **Cursor** acts as the executor for repository and documentation changes.
+- **Base44** is used for visualization and drafting only.
+- **Humans** review pull requests and approve merges.
+
+## MVP scope
+
+This repository currently supports a manual MVP workflow:
+- Issues define tasks
+- Task branches implement work
+- Pull requests deliver changes
+- Humans review and merge
+
+No MCP, no webhooks, and no advanced automation are part of this MVP repository.

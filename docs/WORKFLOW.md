@@ -364,4 +364,10 @@ For MVP operation:
 - Never create commits directly on `main` for task work.
 - All task work must be delivered through a pull request.
 - No pull request should be merged without human review/approval.
-- A pull request should be merged only when the issue’s Success Criteria and Definition of Done are satisfied.
+- A pull request should be merged only when the issue’s Success Criteria and Definition of Done are satisfied.### MVP branch creation
+For the current MVP, task branches are created manually from `main` using the agreed naming format:
+
+`orchestrator/ORCH-xxxx-description`
+
+### Base44 role in MVP
+Base44 is used for visualization and drafting only in the current MVP. It does not act as the source of truth and does not perform repository changes directly.
