@@ -340,4 +340,21 @@ Steps to validate:
 4. Confirm the PR template is populated.
 5. Confirm the PR description links back to the task when the issue number is available.
 
-This is a documentation-only validation step for the MVP workflow.
+This is a documentation-only validation step for the MVP workflow.## 9. Minimum MVP labels and manual review rule
+
+### Minimum MVP label set
+- status/todo
+- status/in-progress
+- status/review
+- status/done
+- assigned/cursor
+- assigned/openai
+- assigned/human
+- orchestration/task-spec
+
+### Minimum manual PR review rule
+A PR can be approved only after a human reviewer confirms:
+- the PR addresses the issue’s Success Criteria,
+- stated risks/assumptions are reflected in the PR description,
+- no unexpected changes were made outside the task scope,
+- the PR uses the agreed template sections.
