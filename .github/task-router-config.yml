@@ -1,0 +1,124 @@
+# Label taxonomy and routing configuration
+
+labels:
+  # Orchestration State (mutually exclusive)
+  status:
+    todo:
+      color: "eeeeee"
+      description: "Task spec ready, awaiting assignment"
+    in-progress:
+      color: "fbca04"
+      description: "Cursor actively working"
+    review:
+      color: "0075ca"
+      description: "PR open, awaiting validation"
+    blocked:
+      color: "d73a49"
+      description: "Waiting on external input"
+    done:
+      color: "28a745"
+      description: "Merged and closed"
+
+  # Routing (direct systems)
+  assigned:
+    cursor:
+      color: "a2eeef"
+      description: "Cursor should implement this"
+    openai:
+      color: "ffdbaa"
+      description: "OpenAI should refine spec"
+    human:
+      color: "ff9999"
+      description: "Manual intervention needed"
+    base44:
+      color: "c2e0c6"
+      description: "Needs Base44 workflow integration"
+
+  # Metadata
+  priority:
+    critical:
+      color: "d73a49"
+      description: "Critical priority"
+    high:
+      color: "ff6b6b"
+      description: "High priority"
+    medium:
+      color: "ffd93d"
+      description: "Medium priority"
+    low:
+      color: "95e1d3"
+      description: "Low priority"
+
+  effort:
+    xs:
+      color: "c5def5"
+      description: "Extra small (<1 hour)"
+    small:
+      color: "b7d4e6"
+      description: "Small (1-4 hours)"
+    medium:
+      color: "a8ccd7"
+      description: "Medium (1-2 days)"
+    large:
+      color: "98c5c8"
+      description: "Large (>2 days)"
+
+  # Type
+  type:
+    feature:
+      color: "1f883d"
+      description: "New feature"
+    bugfix:
+      color: "d73a49"
+      description: "Bug fix"
+    refactor:
+      color: "5319e7"
+      description: "Refactor"
+    test:
+      color: "0366d6"
+      description: "Test"
+    docs:
+      color: "6f42c1"
+      description: "Documentation"
+
+  # Component
+  component:
+    core:
+      color: "0052cc"
+      description: "Core/engine"
+    integrations:
+      color: "6f42c1"
+      description: "External integrations"
+    api-layer:
+      color: "1f883d"
+      description: "API/interface layer"
+    testing:
+      color: "5319e7"
+      description: "Testing framework"
+
+  # System markers
+  orchestration:
+    task-spec:
+      color: "fbca04"
+      description: "Created by ChatGPT engine"
+    generated:
+      color: "e1e4e8"
+      description: "Auto-created by workflow"
+
+# Routing rules
+routing:
+  - if: label == 'orchestration/task-spec' AND label == 'status/todo'
+    then: label 'awaiting-cursor'
+    
+  - if: status == 'open' AND label == 'assigned/human' AND no-comments-for-3-days
+    then: notify humans
+    
+  - if: pr-merged AND closes-issue
+    then: label issue 'status/done'
+
+# Default labels for new issues
+default-labels:
+  - orchestration/task-spec
+  - awaiting-cursor
+  - priority/medium
+  - status/todo

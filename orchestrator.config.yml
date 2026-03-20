@@ -1,0 +1,201 @@
+# AI Orchestrator Configuration
+
+# System information
+system:
+  name: "AI Orchestrator"
+  version: "1.0.0-mvp"
+  phase: "MVP - Manual Loop"
+  description: "GitHub-based orchestration for AI-coordinated development"
+
+# Participants
+participants:
+  openai:
+    name: "OpenAI / ChatGPT"
+    role: "Director / Task Spec Writer"
+    capabilities:
+      - create_issues
+      - write_specs
+      - clarify_in_comments
+    limitations:
+      - cannot_commit_code
+      - cannot_merge
+      
+  cursor:
+    name: "Cursor IDE"
+    role: "Coding Specialist / Executor"
+    capabilities:
+      - read_issues
+      - commit_code
+      - push_to_feature_branches
+      - create_pull_requests
+    limitations:
+      - cannot_merge_to_main
+      - cannot_delete_branches
+      - cannot_approve_prs
+      
+  base44:
+    name: "Base44"
+    role: "App Builder / Orchestration UI"
+    capabilities:
+      - read_issues_via_api
+      - read_prs_via_api
+      - receive_webhooks
+      - display_dashboard
+    limitations:
+      - cannot_commit_code
+      - cannot_merge_prs
+      - cannot_override_github_state
+      
+  human:
+    name: "Human Team Member"
+    role: "Reviewer / Quality Gate / Decision Maker"
+    capabilities:
+      - review_code
+      - approve_prs
+      - merge_to_main
+      - override_decisions
+      - resolve_conflicts
+    limitations:
+      - needs_github_access
+      - manual_approval_required
+
+# GitHub Configuration
+github:
+  repository_name: "ai-orchestrator"
+  
+  branch_strategy:
+    main: "production-ready"
+    develop: "staging" # optional
+    feature_format: "feature/task-{issue-number}-{slug}"
+    protect_main: true
+    require_pr_review: 1
+    require_status_checks: true
+    
+  labels:
+    status_labels:
+      - todo
+      - in-progress
+      - review
+      - blocked
+      - done
+      
+    routing_labels:
+      - assigned/cursor
+      - assigned/openai
+      - assigned/human
+      - assigned/base44
+      
+    metadata_labels:
+      priority: ["critical", "high", "medium", "low"]
+      effort: ["xs", "small", "medium", "large"]
+      type: ["feature", "bugfix", "refactor", "test", "docs"]
+      component: ["core", "integrations", "api-layer", "testing"]
+
+# Workflow Configuration
+workflows:
+  task_creation:
+    trigger: "new_issue_with_task_spec_template"
+    actions:
+      - label: "orchestration/task-spec"
+      - label: "status/todo"
+      - label: "assigned/cursor"
+      - create_branch: "feature/task-{issue}-{slug}"
+      - comment: "Task routed to Cursor"
+      
+  task_execution:
+    trigger: "when_cursor_ready"
+    actions:
+      - checkout: "feature/task-{issue}-{slug}"
+      - implement_code
+      - commit: "message must include (fixes #{issue})"
+      - push: "to origin"
+      
+  task_validation:
+    trigger: "pr_opened_or_updated"
+    automation:
+      - validate_pr_format: "must have all template sections"
+      - validate_link_to_issue: "PR body must have Closes #{issue}"
+      - run_tests: "if test files exist"
+      - check_merge_conflicts: "none allowed"
+    report: "pass or fail in PR comment"
+    
+  task_completion:
+    trigger: "pr_merged_to_main"
+    actions:
+      - label_issue: "status/done"
+      - remove_label: "status/in-progress"
+      - post_comment: "Task completed in PR #{pr}"
+      - notify_webhook: "base44_webhook_url (if configured)"
+      - delete_branch: "feature/task-*"
+
+# Integration Endpoints
+integrations:
+  base44:
+    webhook_url: "${BASE44_WEBHOOK}" # Set as GitHub secret
+    webhook_secret: "${BASE44_SECRET}" # Set as GitHub secret
+    events: ["task.completed", "task.blocked", "task.created"]
+    retry_policy: "exponential_backoff"
+    timeout: "10s"
+    
+  openai:
+    api_endpoint: null # Manual integration for MVP
+    auth_method: null
+    note: "OpenAI creates issues manually via GitHub UI"
+    
+  cursor:
+    api_endpoint: null # Manual integration for MVP
+    auth_method: null
+    note: "Cursor integrates via git push/pull"
+
+# Metrics & Reporting (Phase 2+)
+metrics:
+  tracking_enabled: false # Enable in Phase 2
+  metrics:
+    - issues_created_per_week
+    - issues_completed_per_week
+    - avg_time_to_complete
+    - pr_validation_pass_rate
+    - blocked_issues_count
+    
+# Feature Flags
+features:
+  auto_create_branch: true # GitHub Action creates branch on new issue
+  auto_validate_pr: true # GitHub Action validates PR format and tests
+  auto_sync_with_base44: false # Enable when Base44 webhook is ready
+  auto_merge: false # Not recommended for MVP
+  mcp_enabled: false # Enable in Phase 2+
+  
+# MVP Phase Settings
+mvp:
+  phase: 1
+  duration: "3 weeks"
+  expected_outcomes:
+    - "GitHub issue workflow established"
+    - "Cursor can read specs and create PRs"
+    - "Humans can approve and merge"
+    - "Base44 can read and display state"
+    - "Full history preserved in GitHub"
+    
+  next_phase:
+    "Phase 2 adds:"
+    - "Cursor API integration (auto-create PRs)"
+    - "Base44 webhook integration (real-time sync)"
+    - "MCP servers (richer context)"
+    - "Auto-merge for safe changes"
+    - "Enhanced metrics and reporting"
+
+# Notes
+notes: |
+  This configuration describes the MVP phase of AI Orchestrator.
+  
+  Key principle: GitHub is the single source of truth.
+  All state changes flow through GitHub commits, issues, and PRs.
+  
+  Phase 1 (MVP) relies on manual operations but with GitHub Actions
+  handling tedious automation (branch creation, validation, cleanup).
+  
+  Phase 2 (Advanced) adds richer integrations but GitHub remains
+  the commit-of-record and authoritative state store.
+  
+  Phase 3 (Autonomous) could allow automated decisions but with
+  full audit trail and human override capability.
