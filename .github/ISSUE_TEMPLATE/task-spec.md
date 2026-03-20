@@ -43,3 +43,20 @@ Relates to: #
 - Created by: OpenAI
 - Status: Awaiting Implementation
 - Last updated: (auto)
+### Goal
+Describe the specific outcome this task should achieve.
+
+### Success Criteria
+List clear and testable results. A reviewer should be able to confirm each item.
+
+### Technical Context
+Include relevant files, paths, dependencies, or links needed to complete the task.
+
+### Constraints
+List what must NOT be done (no automation, no new tools, MVP-only limits).
+
+### Out of scope
+Clearly state what is NOT part of this task to avoid scope creep.
+
+### Notes for implementer
+Include any important sequencing, risks, or assumptions.
