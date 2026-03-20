@@ -328,3 +328,16 @@ This triggers Base44 to:
 ---
 
 Last Updated: 2026-03-19
+## 8. ORCH-0002 — first manual workflow test (documentation-only)
+
+This task validates the MVP contract-first workflow manually.
+
+Steps to validate:
+1. Create a GitHub issue using the **Task specification** template.
+2. Confirm the issue includes YAML front matter and a `target_branch` using the format:
+   `orchestrator/ORCH-XXXX-short-description`
+3. Create a pull request from that task branch into `main`.
+4. Confirm the PR template is populated.
+5. Confirm the PR description links back to the task when the issue number is available.
+
+This is a documentation-only validation step for the MVP workflow.
