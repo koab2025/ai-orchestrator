@@ -370,4 +370,12 @@ For the current MVP, task branches are created manually from `main` using the ag
 `orchestrator/ORCH-xxxx-description`
 
 ### Base44 role in MVP
-Base44 is used for visualization and drafting only in the current MVP. It does not act as the source of truth and does not perform repository changes directly.
+Base44 is used for visualization and drafting only in the current MVP. It does not act as the source of truth and does not perform repository changes directly.## 11. MVP discipline and PR hygiene
+
+For the current MVP:
+
+- No task work should happen directly on `main`.
+- All changes must be delivered through a pull request.
+- Pull request descriptions should follow the repository’s expected PR structure consistently.
+- Pull requests should link back to the originating issue, for example `Fixes #...` or `Closes #...`.
+- Task specifications should be created using the task-spec issue template so the expected routing fields are present.
