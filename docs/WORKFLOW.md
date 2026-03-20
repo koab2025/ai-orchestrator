@@ -357,4 +357,11 @@ A PR can be approved only after a human reviewer confirms:
 - the PR addresses the issue’s Success Criteria,
 - stated risks/assumptions are reflected in the PR description,
 - no unexpected changes were made outside the task scope,
-- the PR uses the agreed template sections.
+- the PR uses the agreed template sections.## 10. MVP branch protection and merge hygiene
+
+For MVP operation:
+
+- Never create commits directly on `main` for task work.
+- All task work must be delivered through a pull request.
+- No pull request should be merged without human review/approval.
+- A pull request should be merged only when the issue’s Success Criteria and Definition of Done are satisfied.
